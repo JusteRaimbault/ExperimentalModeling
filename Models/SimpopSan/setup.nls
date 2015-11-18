@@ -34,6 +34,11 @@ to setup-globals
   set present-year 2015
   set prospective-year 2030
   
+  ; gis files
+  set gis-world-file "setup/gis/coastline/jp_dcw_cst_pgn.shp"
+  set gis-cities-file "setup/gis/cities/jp_toku_dmyo_pts.shp"
+  
+  
   
   
 end
@@ -44,11 +49,46 @@ end
 ;  - other physical accessibility conditions ?
 to setup-world
   
+  ; setup world envelope
+  gis:set-world-envelope gis:envelope-of gis:load-dataset "setup/gis/bbox/bounds.shp"
+  
+  ; load dataset
+  set gis-world gis:load-dataset gis-world-file
+  
+  ; set projection and boundaries ?
+  gis:set-drawing-color brown
+  gis:draw gis-world 1
+  
+  ; draw world : sea, boundaries etc
+  
+  
+  
+  
+  
 end
 
 
 
 to setup-cities
+   
+   ; load cities dataset   
+  set gis-cities gis:load-dataset gis-cities-file 
+  
+  gis:set-drawing-color red gis:draw gis-cities 1
+  
+  ; assumed as point shapefile
+  foreach gis:feature-list-of gis-cities [
+     let point-list first gis:vertex-lists-of ?
+     let point first point-list
+     let loc gis:location-of point
+     
+     ;let pop gis:property-value ? "POPULATION"
+     ;let eco-secondary gis:property-value ? "ECONOMIC-SECONDARY"
+     ;let eco-tertiary gis:property-value ? "ECONOMIC-TERTIARY"
+     
+     
+  ] 
+  
   
   
 end
@@ -58,6 +98,13 @@ end
 ; random world organisation
 ;  for test purposes
 to setup-random-layout
+  
+  resize-world -30 30 -30 30 set-patch-size 10
+  
+  ;  -> use christaller-zipf synthetic generator
+  generate-cities
+  
+  
   
 end
 

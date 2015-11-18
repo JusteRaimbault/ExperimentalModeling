@@ -1,4 +1,4 @@
-extensions []
+extensions [gis]
 
 
 __includes [
@@ -10,17 +10,35 @@ __includes [
   
   "indicators.nls"
   
+  ;;;;
+  ;; utils
+  ;;;;
+  
+  "lib/synth-cities.nls"
+  
+  
+  
 ]
 
 
 
 globals [
   
+  ;;
+  ; setup
+  ;;
+  
   initial-year
   present-year
   prospective-year
   
+  ;; setup files
+  gis-world-file
+  gis-cities-file
   
+  ; associated gis datasets
+  gis-world
+  gis-cities
   
   ;;
   ; cities related variables
@@ -29,6 +47,12 @@ globals [
   populations
   
 ]
+
+
+patches-own [
+  distance-weighted-total-pop 
+]
+
 
 
 ;; an agent is a city
@@ -52,26 +76,26 @@ cities-own [
 ]
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+286
 10
-649
-470
-16
-16
-13.0
+906
+651
+30
+30
+10.0
 1
 10
 1
 1
 1
 0
+0
+0
 1
-1
-1
--16
-16
--16
-16
+-30
+30
+-30
+30
 0
 0
 1
@@ -79,10 +103,10 @@ ticks
 30.0
 
 CHOOSER
-7
-52
-99
-97
+6
+10
+98
+55
 setup-type
 setup-type
 "gis" "random"
@@ -106,10 +130,10 @@ NIL
 1
 
 BUTTON
-81
-397
-144
-430
+88
+396
+151
+429
 NIL
 go
 T
@@ -122,42 +146,102 @@ NIL
 NIL
 1
 
+SLIDER
+5
+84
+97
+117
+#-cities
+#-cities
+0
+100
+80
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+97
+84
+217
+117
+city-max-pop
+city-max-pop
+0
+1000
+800
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+5
+116
+157
+149
+rank-size-exponent
+rank-size-exponent
+0
+3
+0.4
+0.05
+1
+NIL
+HORIZONTAL
+
+TEXTBOX
+10
+68
+160
+86
+Random setup
+11
+0.0
+1
+
+TEXTBOX
+11
+187
+161
+205
+Runtime
+11
+0.0
+1
+
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
+Sort of economic simpop, built in the frame of experimental modeling (sort of companion modeling).
+
+Aims to simulate Japan Urban Growth 1950 -> present. Focuses on economic structure to try to endogoneise the stylized fact of the secondary->tertiary transition (or more precisely its effects on city system structure [Ref economists])
+
 
 ## HOW IT WORKS
 
-(what rules the agents use to create the overall behavior of the model)
-
-## HOW TO USE IT
-
-(how to use the model, including a description of each of the items in the Interface tab)
+'it's complicated' ;)
 
 ## THINGS TO NOTICE
 
-(suggested things for the user to notice while running the model)
+ -> first results from hand exploration
 
-## THINGS TO TRY
-
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
 
 ## EXTENDING THE MODEL
 
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
-
-## NETLOGO FEATURES
-
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
+Calibrate, explore and try to validate.
 
 ## RELATED MODELS
 
-(models in the NetLogo Models Library and elsewhere which are of related interest)
+ - series of Simpop Models [Pumain, 2012]
+ - Marius [Cottineau, 2015]
 
 ## CREDITS AND REFERENCES
 
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
+ - [Pumain, 2012]
+ - [Cottineau, 2015]
+ - [.]
 @#$#@#$#@
 default
 true
