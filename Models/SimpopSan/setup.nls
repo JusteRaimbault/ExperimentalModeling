@@ -50,14 +50,21 @@ end
 to setup-world
   
   ; setup world envelope
-  gis:set-world-envelope gis:envelope-of gis:load-dataset "setup/gis/bbox/bounds.shp"
+  let bounds-layer gis:load-dataset "setup/gis/bbox/bounds.shp"
+  ; resize world proportionaly 
+  let envelope gis:envelope-of bounds-layer let env-ratio ((item 1 envelope - item 0 envelope) / (item 3 envelope - item 2 envelope)) 
+  resize-world -30 30 (floor (-30 / env-ratio)) (floor (30 / env-ratio)) set-patch-size 10
+  
+  gis:set-world-envelope envelope
+  gis:set-drawing-color blue gis:fill gis:load-dataset "setup/gis/bbox/fill.shp" 1
   
   ; load dataset
   set gis-world gis:load-dataset gis-world-file
   
   ; set projection and boundaries ?
   gis:set-drawing-color brown
-  gis:draw gis-world 1
+  ;gis:draw gis-world 1
+  gis:fill gis-world 1
   
   ; draw world : sea, boundaries etc
   
@@ -74,7 +81,7 @@ to setup-cities
    ; load cities dataset   
   set gis-cities gis:load-dataset gis-cities-file 
   
-  gis:set-drawing-color red gis:draw gis-cities 1
+  gis:set-drawing-color red gis:draw gis-cities 2
   
   ; assumed as point shapefile
   foreach gis:feature-list-of gis-cities [
@@ -82,9 +89,9 @@ to setup-cities
      let point first point-list
      let loc gis:location-of point
      
-     ;let pop gis:property-value ? "POPULATION"
-     ;let eco-secondary gis:property-value ? "ECONOMIC-SECONDARY"
-     ;let eco-tertiary gis:property-value ? "ECONOMIC-TERTIARY"
+     let pop gis:property-value ? "POPULATION"
+     let eco-secondary gis:property-value ? "ECONOMIC_2"
+     let eco-tertiary gis:property-value ? "ECONOMIC_3"
      
      
   ] 
