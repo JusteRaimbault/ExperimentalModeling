@@ -1,0 +1,17 @@
+
+;;
+;  indicators
+
+
+to-report total-population
+  report sum [population] of cities
+end
+
+
+to-report total-economic-secondary
+  report sum [economic-secondary] of cities
+end
+
+to-report total-economic-tertiary
+  report sum [economic-tertiary] of cities
+end

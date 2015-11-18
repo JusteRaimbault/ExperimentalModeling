@@ -1,0 +1,69 @@
+
+;; setup
+
+to setup
+  ;; init
+  init-setup
+  
+  setup-globals
+  
+  if setup-type = "random" [
+    setup-random-layout
+  ]
+  if setup-type = "gis" [
+    setup-world
+    setup-cities
+  ]
+  
+  finish-setup
+  
+end
+
+
+
+to init-setup
+  ca
+  reset-ticks
+end
+
+
+to setup-globals
+  
+  ; built-in vars
+  set initial-year 1950
+  set present-year 2015
+  set prospective-year 2030
+  
+  
+  
+end
+
+;;
+;  - read gis boundaries ; setup according world size
+;  - draw gis ?
+;  - other physical accessibility conditions ?
+to setup-world
+  
+end
+
+
+
+to setup-cities
+  
+  
+end
+
+
+;;
+; random world organisation
+;  for test purposes
+to setup-random-layout
+  
+end
+
+
+
+
+to finish-setup
+  
+end

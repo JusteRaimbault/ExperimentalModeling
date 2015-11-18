@@ -5,6 +5,49 @@ __includes [
  
   "setup.nls"
   "main.nls" 
+ 
+  "city.nls"
+  
+  "indicators.nls"
+  
+]
+
+
+
+globals [
+  
+  initial-year
+  present-year
+  prospective-year
+  
+  
+  
+  ;;
+  ; cities related variables
+  
+  ; list of city populations - may be useful for rank-size plot e.g.
+  populations
+  
+]
+
+
+;; an agent is a city
+breed [cities city]
+
+
+
+
+cities-own [
+  
+  ; population
+  population
+  
+  ;; economic variables : E_2 and E_3 (t)
+  economic-secondary
+  economic-tertiary
+  
+  
+  
   
 ]
 @#$#@#$#@
@@ -34,6 +77,50 @@ GRAPHICS-WINDOW
 1
 ticks
 30.0
+
+CHOOSER
+7
+52
+99
+97
+setup-type
+setup-type
+"gis" "random"
+0
+
+BUTTON
+19
+396
+74
+429
+setup
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+81
+397
+144
+430
+NIL
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
