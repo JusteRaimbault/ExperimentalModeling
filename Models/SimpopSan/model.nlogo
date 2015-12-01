@@ -1,4 +1,4 @@
-extensions [gis]
+extensions [gis gradient]
 
 
 __includes [
@@ -9,6 +9,8 @@ __includes [
   "city.nls"
   
   "indicators.nls"
+  "plot.nls"
+  "display.nls"
   
   ;;;;
   ;; utils
@@ -46,6 +48,10 @@ globals [
   ; list of city populations - may be useful for rank-size plot e.g.
   populations
   
+  ; 
+  initial-population-to-wealth-exponent
+  initial-city-max-pop
+  
 ]
 
 
@@ -63,7 +69,7 @@ breed [cities city]
 
 cities-own [
   
-  ; population
+  ; population : P(t)
   population
   
   ;; economic variables : E_2 and E_3 (t)
@@ -79,9 +85,9 @@ GRAPHICS-WINDOW
 286
 10
 906
-561
+651
 30
--1
+30
 10.0
 1
 10
@@ -94,8 +100,8 @@ GRAPHICS-WINDOW
 1
 -30
 30
--26
-25
+-30
+30
 0
 0
 1
@@ -110,7 +116,7 @@ CHOOSER
 setup-type
 setup-type
 "gis" "random"
-0
+1
 
 BUTTON
 19
@@ -130,9 +136,9 @@ NIL
 1
 
 BUTTON
-88
+149
 396
-151
+212
 429
 NIL
 go
@@ -203,13 +209,137 @@ Random setup
 
 TEXTBOX
 11
-187
+190
 161
-205
+208
 Runtime
 11
 0.0
 1
+
+SLIDER
+5
+239
+150
+272
+sigma-gibrat-pop
+sigma-gibrat-pop
+0
+0.1
+0.01
+0.01
+1
+NIL
+HORIZONTAL
+
+PLOT
+953
+27
+1357
+284
+rank-size-plot
+NIL
+NIL
+0.0
+5.0
+5.0
+6.0
+true
+false
+"" "update-rank-size-plot"
+PENS
+"default" 1.0 0 -16777216 true "" ""
+
+PLOT
+953
+292
+1153
+442
+population
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot total-population"
+
+SLIDER
+5
+207
+150
+240
+mean-gibrat-pop
+mean-gibrat-pop
+0
+2
+1.003
+0.001
+1
+NIL
+HORIZONTAL
+
+PLOT
+1157
+292
+1411
+442
+Economic
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"secondary" 1.0 0 -12186836 true "" "plot total-economic-secondary"
+"tertiary" 1.0 0 -14333415 true "" "plot total-economic-tertiary"
+
+BUTTON
+78
+396
+141
+429
+go
+go
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+MONITOR
+951
+456
+1030
+501
+population
+total-population
+17
+1
+11
+
+SWITCH
+7
+281
+146
+314
+with-economic?
+with-economic?
+1
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?

@@ -15,3 +15,9 @@ end
 to-report total-economic-tertiary
   report sum [economic-tertiary] of cities
 end
+
+
+
+to-report rank-size-slope
+  
+end

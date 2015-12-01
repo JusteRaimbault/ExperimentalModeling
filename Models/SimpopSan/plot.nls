@@ -1,0 +1,15 @@
+
+;;
+;  plots
+
+
+to update-rank-size-plot
+  let sorted-pops sort-by [?1 > ?2] [population] of cities
+  set-current-plot "rank-size-plot" set-plot-pen-mode 0 set-plot-pen-color (ticks - initial-year);clear-plot
+  let i 1
+  foreach sorted-pops [
+     plotxy ln i ln ?
+     set i i + 1
+  ]
+  ;plotxy
+end

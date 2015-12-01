@@ -39,6 +39,12 @@ to setup-globals
   set gis-cities-file "setup/gis/cities/jp_toku_dmyo_pts.shp"
   
   
+  ;; for-now built-in params
+  
+  ; initial economic share -> 50 -50
+  ; initial economic multiplier -> à-la-cottineau population-to-wealth exponent (because scales !)
+  set initial-population-to-wealth-exponent 1.1
+  
   
   
 end
@@ -111,13 +117,26 @@ to setup-random-layout
   ;  -> use christaller-zipf synthetic generator
   generate-cities
   
+  ;
+  set initial-city-max-pop max [population] of cities
+  
+  setup-economic-random
   
   
+end
+
+to setup-economic-random
+  ask cities [
+    set economic-secondary population ^ initial-population-to-wealth-exponent
+    set economic-tertiary population ^ initial-population-to-wealth-exponent
+  ]
 end
 
 
 
 
+
 to finish-setup
-  
+  tick-advance initial-year
+  update-display
 end

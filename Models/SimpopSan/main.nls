@@ -6,6 +6,70 @@
 ;  go for one time step
 to go
   
+  if ticks = prospective-year [stop]
   
+  population-evolution
+  
+  economic-evolution
+  
+  update-display
+  
+  tick
   
 end
+
+
+;;
+;  populations
+to population-evolution
+  
+   endogeneous-population-evolution
+   
+   exogeneous-population-evolution
+   
+   migrations
+  
+end
+
+
+;;
+;  TODO : non symmetric growth factor ?
+to endogeneous-population-evolution
+  ask cities [
+     let growth-factor random-normal mean-gibrat-pop sigma-gibrat-pop
+     set population population * growth-factor
+  ]
+end
+
+
+;;
+;  Migrations from outside the country
+to exogeneous-population-evolution
+  
+  ;; TODO : for now included in Gibrat dynamics
+  
+end
+
+
+;;
+;  Here effects of Economy on population are taken into account
+to migrations
+  
+end
+
+
+
+
+
+
+to economic-evolution
+  if with-economic? [
+     ; pop dynamics -> secondary ?
+     ; dE_2 = k_2 dP ; no agglo effect ?
+     ; dE_3 = k_3 dP + k33 E_3 <- pref att on tertiary.
+     
+     
+     
+  ]
+end
+

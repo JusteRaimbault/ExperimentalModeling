@@ -1,0 +1,15 @@
+
+; display
+
+to update-display
+  
+  ; size and colors of cities
+  
+  ask cities [
+    set size max (list (3 * population / initial-city-max-pop) 0.3)
+    let sec-share economic-secondary / (economic-secondary + economic-tertiary)
+    set color gradient:scale (list extract-rgb red extract-rgb green) sec-share 0 1
+
+  ]
+  
+end
