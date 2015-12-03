@@ -1,4 +1,4 @@
-extensions [gis gradient]
+;extensions [gis]
 
 
 __includes [
@@ -16,8 +16,9 @@ __includes [
   ;; utils
   ;;;;
   
-  "lib/synth-cities.nls"
+  "gis.nls"
   
+  "lib/synth-cities.nls"
   
   
 ]
@@ -34,6 +35,8 @@ globals [
   present-year
   prospective-year
   
+  calibration-years
+  
   ;; setup files
   gis-world-file
   gis-cities-file
@@ -49,7 +52,7 @@ globals [
   populations
   
   ; 
-  initial-population-to-wealth-exponent
+  population-to-wealth-exponent
   initial-city-max-pop
   
 ]
@@ -71,12 +74,17 @@ cities-own [
   
   ; population : P(t)
   population
+  delta-population
   
   ;; economic variables : E_2 and E_3 (t)
   economic-secondary
+  
   economic-tertiary
+  delta-economic-tertiary
   
   
+  ; list of objective populations (included initial)
+  expected-populations
   
   
 ]
@@ -84,11 +92,11 @@ cities-own [
 GRAPHICS-WINDOW
 286
 10
-906
-651
-30
-30
-10.0
+899
+563
+100
+-1
+3.0
 1
 10
 1
@@ -98,10 +106,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--30
-30
--30
-30
+-100
+100
+-87
+86
 0
 0
 1
@@ -115,8 +123,8 @@ CHOOSER
 55
 setup-type
 setup-type
-"gis" "random"
-1
+"gis" "random" "raw"
+2
 
 BUTTON
 19
@@ -136,10 +144,10 @@ NIL
 1
 
 BUTTON
-149
-396
-212
-429
+143
+397
+206
+430
 NIL
 go
 T
@@ -226,7 +234,7 @@ sigma-gibrat-pop
 sigma-gibrat-pop
 0
 0.1
-0.01
+0.05
 0.01
 1
 NIL
@@ -241,7 +249,7 @@ rank-size-plot
 NIL
 NIL
 0.0
-5.0
+4.0
 5.0
 6.0
 true
@@ -267,6 +275,7 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "plot total-population"
+"pen-1" 1.0 0 -2674135 true "" "plot current-total-expected-population"
 
 SLIDER
 5
@@ -275,9 +284,9 @@ SLIDER
 240
 mean-gibrat-pop
 mean-gibrat-pop
-0
-2
-1.003
+0.98
+1.05
+1.023
 0.001
 1
 NIL
@@ -320,10 +329,10 @@ NIL
 1
 
 MONITOR
-951
-456
-1030
-501
+188
+498
+267
+543
 population
 total-population
 17
@@ -340,6 +349,39 @@ with-economic?
 1
 1
 -1000
+
+SLIDER
+152
+207
+280
+240
+tertiary-growth
+tertiary-growth
+0
+0.01
+0.0010
+0.001
+1
+NIL
+HORIZONTAL
+
+PLOT
+930
+449
+1236
+644
+data-fit
+simulated pops
+real pops
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" "update-data-fit-plot"
+PENS
+"default" 1.0 0 -16777216 true "" ""
 
 @#$#@#$#@
 ## WHAT IS IT?

@@ -12,7 +12,12 @@ to setup
   ]
   if setup-type = "gis" [
     setup-world
-    setup-cities
+    setup-cities-from-gis
+  ]
+  
+  if setup-type = "raw" [
+    setup-world-raw-data
+    setup-cities-raw-data
   ]
   
   finish-setup
@@ -23,7 +28,7 @@ end
 
 to init-setup
   ca
-  reset-ticks
+  
 end
 
 
@@ -31,19 +36,22 @@ to setup-globals
   
   ; built-in vars
   set initial-year 1950
-  set present-year 2015
-  set prospective-year 2030
+  ;set present-year 2015
+  ;set prospective-year 2030
+  set prospective-year 1989 ; calibrations
+  
+  set calibration-years (list 1950 1955 1960 1965 1970 1975 1980 1985)
   
   ; gis files
-  set gis-world-file "setup/gis/coastline/jp_dcw_cst_pgn.shp"
-  set gis-cities-file "setup/gis/cities/jp_toku_dmyo_pts.shp"
-  
+  ;set gis-world-file "setup/gis/coastline/jp_dcw_cst_pgn.shp"
+  ;set gis-cities-file "setup/gis/cities/jp_toku_dmyo_pts.shp"
+  ;set gis-cities-file "setup/gis/cities/cities.shp"
   
   ;; for-now built-in params
   
   ; initial economic share -> 50 -50
   ; initial economic multiplier -> à-la-cottineau population-to-wealth exponent (because scales !)
-  set initial-population-to-wealth-exponent 1.1
+  set population-to-wealth-exponent 1.1
   
   
   
@@ -55,54 +63,67 @@ end
 ;  - other physical accessibility conditions ?
 to setup-world
   
-  ; setup world envelope
-  let bounds-layer gis:load-dataset "setup/gis/bbox/bounds.shp"
-  ; resize world proportionaly 
-  let envelope gis:envelope-of bounds-layer let env-ratio ((item 1 envelope - item 0 envelope) / (item 3 envelope - item 2 envelope)) 
-  resize-world -30 30 (floor (-30 / env-ratio)) (floor (30 / env-ratio)) set-patch-size 10
-  
-  gis:set-world-envelope envelope
-  gis:set-drawing-color blue gis:fill gis:load-dataset "setup/gis/bbox/fill.shp" 1
-  
-  ; load dataset
-  set gis-world gis:load-dataset gis-world-file
-  
-  ; set projection and boundaries ?
-  gis:set-drawing-color brown
-  ;gis:draw gis-world 1
-  gis:fill gis-world 1
-  
-  ; draw world : sea, boundaries etc
-  
-  
-  
-  
+;  ; setup world envelope
+;  let bounds-layer gis:load-dataset "setup/gis/bbox/bounds.shp"
+;  ; resize world proportionaly 
+;  let envelope gis:envelope-of bounds-layer let env-ratio ((item 1 envelope - item 0 envelope) / (item 3 envelope - item 2 envelope)) 
+;  resize-world -100 100 (floor (-100 / env-ratio)) (floor (100 / env-ratio)) set-patch-size 3
+;  
+;  gis:set-world-envelope envelope
+;  gis:set-drawing-color blue gis:fill gis:load-dataset "setup/gis/bbox/fill.shp" 1
+;  
+;  ; load dataset
+;  set gis-world gis:load-dataset gis-world-file
+;  
+;  ; set projection and boundaries ?
+;  gis:set-drawing-color brown
+;  ;gis:draw gis-world 1
+;  gis:fill gis-world 1
+;  
+;  ; draw world : sea, boundaries etc
+;  
+;  
+;  
+;  
   
 end
 
 
 
-to setup-cities
+to setup-cities-from-gis
    
    ; load cities dataset   
-  set gis-cities gis:load-dataset gis-cities-file 
-  
-  gis:set-drawing-color red gis:draw gis-cities 2
-  
-  ; assumed as point shapefile
-  foreach gis:feature-list-of gis-cities [
-     let point-list first gis:vertex-lists-of ?
-     let point first point-list
-     let loc gis:location-of point
-     
-     let pop gis:property-value ? "POPULATION"
-     let eco-secondary gis:property-value ? "ECONOMIC_2"
-     let eco-tertiary gis:property-value ? "ECONOMIC_3"
-     
-     
-  ] 
-  
-  
+;  set gis-cities gis:load-dataset gis-cities-file 
+;  
+;  ;gis:set-drawing-color red gis:draw gis-cities 2
+;  
+;  ; assumed as point shapefile
+;  foreach gis:feature-list-of gis-cities [
+;    let pop1950 gis:property-value ? "population"
+;    if pop1950 != 0.0 and pop1950 != nobody [ 
+;      ;show gis:property-value ? "population"
+;      ;let point-list first gis:vertex-lists-of ?
+;      ;let point first point-list
+;      let loc gis:location-of gis:centroid-of ?
+;      
+;      let expectedpop (list pop1950 gis:property-value ? "populati_1" gis:property-value ? "populati_2" gis:property-value ? "populati_3" gis:property-value ? "populati_4" gis:property-value ? "populati_5" gis:property-value ? "populati_6" gis:property-value ? "populati_7")
+;      
+;      ;let eco-secondary gis:property-value ? "ECONOMIC_2"
+;      ;let eco-tertiary gis:property-value ? "ECONOMIC_3"
+;      if count cities-on patch first loc last loc = 0 [
+;        create-cities 1 [
+;          setxy first loc last loc set population pop1950 set expected-populations expectedpop
+;          new-city 
+;        ]
+;      ]
+;     
+;    ]
+;  ] 
+;  
+;  set initial-city-max-pop max [population] of cities
+;  
+;  setup-economic-random
+;  
   
 end
 
@@ -127,8 +148,8 @@ end
 
 to setup-economic-random
   ask cities [
-    set economic-secondary population ^ initial-population-to-wealth-exponent
-    set economic-tertiary population ^ initial-population-to-wealth-exponent
+    set economic-secondary population ^ population-to-wealth-exponent
+    set economic-tertiary population ^ population-to-wealth-exponent
   ]
 end
 
@@ -137,6 +158,7 @@ end
 
 
 to finish-setup
+  reset-ticks
   tick-advance initial-year
   update-display
 end

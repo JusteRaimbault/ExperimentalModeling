@@ -6,10 +6,21 @@ to update-display
   ; size and colors of cities
   
   ask cities [
-    set size max (list (3 * population / initial-city-max-pop) 0.3)
+    ;set size max (list (3 * population / initial-city-max-pop) 0.3)
+    set size 3 + (10 * population / initial-city-max-pop)
     let sec-share economic-secondary / (economic-secondary + economic-tertiary)
-    set color gradient:scale (list extract-rgb red extract-rgb green) sec-share 0 1
+    set color color-gradient blue red sec-share 0 1
 
   ]
   
+end
+
+
+;; primitive to replace gradient extension
+; takes colors and returns a color
+to-report color-gradient [color1 color2 value lower-bound upper-bound]
+  ;gradient:scale (list extract-rgb blue extract-rgb red) ticks initial-year prospective-year
+  let c1 extract-rgb color1 let c2 extract-rgb color2
+  let t (value - lower-bound) / (upper-bound - lower-bound)
+  report approximate-rgb ((item 0 c2) * t + (item 0 c1) * (1 - t)) ((item 1 c2) * t + (item 1 c1) * (1 - t)) ((item 2 c2) * t + (item 2 c1) * (1 - t))
 end

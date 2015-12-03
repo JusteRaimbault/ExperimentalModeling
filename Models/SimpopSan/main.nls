@@ -37,7 +37,9 @@ end
 to endogeneous-population-evolution
   ask cities [
      let growth-factor random-normal mean-gibrat-pop sigma-gibrat-pop
+     let previous-pop population
      set population population * growth-factor
+     set delta-population population - previous-pop
   ]
 end
 
@@ -68,8 +70,16 @@ to economic-evolution
      ; dE_2 = k_2 dP ; no agglo effect ?
      ; dE_3 = k_3 dP + k33 E_3 <- pref att on tertiary.
      
+     ;  if E_i(0) = P^alpha , then dE_i = d[P^alpha] = alpha P^(alpha - 1) dP   ==> k_2 = alpha P^(alpha - 1) ?
+     ;  -- can be directly integrated --
      
-     
+     ask cities [
+       set economic-secondary population ^ population-to-wealth-exponent
+       
+       ; tertiary
+       set delta-economic-tertiary (population-to-wealth-exponent * (population ^ (population-to-wealth-exponent - 1)) * delta-population) + tertiary-growth * economic-tertiary
+       set economic-tertiary economic-tertiary + delta-economic-tertiary
+     ]
   ]
 end
 

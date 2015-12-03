@@ -17,7 +17,41 @@ to-report total-economic-tertiary
 end
 
 
-
+;;
+;  linear regression ? ! impossible without extension ¡
 to-report rank-size-slope
   
 end
+
+
+;;
+;
+to-report total-expected-population [year]
+  report sum [city-expected-population year] of cities
+  
+end
+
+to-report city-expected-population [year]
+  let ind position year calibration-years
+  report item ind expected-populations
+end
+
+
+;;
+;  extrapolate a linear trend to a a visual year-by-year trend
+to-report city-current-expected-population
+  ; get two closest calibration years
+  let current-year max list ticks 1950
+  let calibind (floor ((current-year - 1950)/ 5))
+  ; calib ind assumed <= length calibration-years
+  let exppopi city-expected-population item calibind calibration-years let exppopinext exppopi
+  if calibind < (length calibration-years) - 1 [set exppopinext city-expected-population item (calibind + 1) calibration-years]
+  report exppopi +  ((current-year -  item calibind calibration-years ) * (exppopinext - exppopi) / 5)
+end
+
+
+to-report current-total-expected-population
+  report sum [city-current-expected-population] of cities
+end
+
+

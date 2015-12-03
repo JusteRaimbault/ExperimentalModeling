@@ -5,11 +5,40 @@
 
 to update-rank-size-plot
   let sorted-pops sort-by [?1 > ?2] [population] of cities
-  set-current-plot "rank-size-plot" set-plot-pen-mode 0 set-plot-pen-color (ticks - initial-year);clear-plot
+  set-current-plot "rank-size-plot" set-plot-pen-mode 0
+  ;let c  gradient:scale (list extract-rgb blue extract-rgb red) ticks initial-year prospective-year
+  set-plot-pen-color color-gradient blue red ticks initial-year prospective-year
+  ;set-plot-pen-color approximate-rgb item 0 c item 1 c item 2 c
+  
+  ;clear-plot
   let i 1
   foreach sorted-pops [
      plotxy ln i ln ?
+     plot-pen-down
      set i i + 1
   ]
+  plot-pen-up
   ;plotxy
+end
+
+
+
+to update-data-fit-plot
+  ; need per city expected population
+  let expected-pops sort map ln [city-current-expected-population] of cities
+  let real-pops sort map ln [population] of cities
+  
+  set-current-plot "data-fit" set-plot-pen-mode 0 set-plot-x-range min real-pops max real-pops set-plot-y-range min expected-pops max expected-pops
+  set-plot-pen-color color-gradient blue red ticks initial-year prospective-year
+  ;set-plot-pen-color approximate-rgb item 0 c item 1 c item 2 c
+  
+  if ticks = initial-year [set-plot-pen-color green]
+  
+  let i 0
+  foreach expected-pops [
+     plotxy item i real-pops item i expected-pops
+     plot-pen-down
+     set i i + 1
+  ]
+  plot-pen-up
 end
