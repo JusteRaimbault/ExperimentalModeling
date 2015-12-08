@@ -18,6 +18,8 @@ __includes [
   
   "gis.nls"
   
+  "utils.nls"
+  
   "lib/synth-cities.nls"
   
   
@@ -87,12 +89,16 @@ cities-own [
   expected-populations
   
   
+  ;; migration flows
+  ;;  as list of [to_who,flow]
+  population-flows
+  
 ]
 @#$#@#$#@
 GRAPHICS-WINDOW
-286
+304
 10
-899
+917
 563
 100
 -1
@@ -216,20 +222,20 @@ Random setup
 1
 
 TEXTBOX
-11
-190
-161
-208
+8
+175
+158
+193
 Runtime
 11
 0.0
 1
 
 SLIDER
-5
-239
-150
-272
+8
+224
+153
+257
 sigma-gibrat-pop
 sigma-gibrat-pop
 0
@@ -278,10 +284,10 @@ PENS
 "pen-1" 1.0 0 -2674135 true "" "plot current-total-expected-population"
 
 SLIDER
-5
-207
-150
-240
+8
+192
+153
+225
 mean-gibrat-pop
 mean-gibrat-pop
 0.98
@@ -340,26 +346,26 @@ total-population
 11
 
 SWITCH
-7
-281
-146
-314
+6
+313
+145
+346
 with-economic?
 with-economic?
-1
+0
 1
 -1000
 
 SLIDER
-152
-207
-280
-240
+156
+192
+300
+225
 tertiary-growth
 tertiary-growth
 0
 0.01
-0.0010
+0.0060
 0.001
 1
 NIL
@@ -382,6 +388,43 @@ false
 "" "update-data-fit-plot"
 PENS
 "default" 1.0 0 -16777216 true "" ""
+
+SWITCH
+5
+348
+145
+381
+with-migrations?
+with-migrations?
+0
+1
+-1000
+
+SLIDER
+8
+258
+153
+291
+migration-rate
+migration-rate
+0
+0.000001
+1.0E-7
+0.0000001
+1
+NIL
+HORIZONTAL
+
+MONITOR
+189
+546
+265
+591
+∆E3
+max [delta-economic-tertiary] of cities
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?

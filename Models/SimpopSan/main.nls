@@ -56,7 +56,36 @@ end
 ;;
 ;  Here effects of Economy on population are taken into account
 to migrations
-  
+  if with-migrations? [
+      ; tertiray dynamics induce migrations
+      ;  by \phi_i->j = migration-rate * ∆ delta-economic-tertiary
+      ;   brute force algo : compute all flows for i≠j and do migrations
+      ;   dirty : list of flows to other cities as city variable -- !! not explicit ¡¡
+      
+      ; compute flows
+      ask cities [set population-flows []]
+      let cities-list to-list cities let i 0
+      while [i < length cities-list - 1][
+        let j i + 1 let c1 item i cities-list
+        while [j < length cities-list][
+          let c2 item j cities-list
+          let flow migration-rate * ([delta-economic-tertiary] of c1 - [delta-economic-tertiary] of c2) * [population] of c2
+          ask c1 [set population-flows lput (list [who] of c2 flow) population-flows]
+          set j j + 1  
+        ]
+        set i i + 1
+      ]
+      
+      ; do migrations
+      ask cities [
+        foreach population-flows [
+          let delta-pop last ? let who-of-c2 first ?
+          ask city who-of-c2 [set population population - delta-pop]
+          set population population + delta-pop 
+        ] 
+      ]
+      
+  ]
 end
 
 
