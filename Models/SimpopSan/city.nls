@@ -11,4 +11,6 @@ to new-city
   ;let sec-share economic-secondary / (economic-secondary + economic-tertiary)
   ;set color gradient:scale (list extract-rgb red extract-rgb green) sec-share 0 1
   
+  set realized-populations [] set yearly-expected-populations []
+  
 end

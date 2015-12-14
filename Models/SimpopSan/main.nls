@@ -29,6 +29,8 @@ to population-evolution
    
    migrations
   
+   ask cities [set realized-populations lput population realized-populations set yearly-expected-populations lput city-current-expected-population yearly-expected-populations]
+  
 end
 
 

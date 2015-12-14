@@ -24,6 +24,21 @@ to-report rank-size-slope
 end
 
 
+;; fit to data as sum on all years and cities of city pop - expected pop
+to-report data-fit
+  let res 0
+  ask cities [
+    let i 0
+    foreach realized-populations [
+       set res res + (? - item i yearly-expected-populations) ^ 2
+       set i i + 1
+    ] 
+  ]
+  report res
+end
+
+
+
 ;;
 ;
 to-report total-expected-population [year]

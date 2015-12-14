@@ -87,7 +87,8 @@ cities-own [
   
   ; list of objective populations (included initial)
   expected-populations
-  
+  yearly-expected-populations
+  realized-populations
   
   ;; migration flows
   ;;  as list of [to_who,flow]
@@ -98,8 +99,8 @@ cities-own [
 GRAPHICS-WINDOW
 304
 10
-913
-567
+917
+563
 100
 -1
 3.0
@@ -246,43 +247,6 @@ sigma-gibrat-pop
 NIL
 HORIZONTAL
 
-PLOT
-953
-27
-1357
-284
-rank-size-plot
-NIL
-NIL
-0.0
-4.0
-5.0
-6.0
-true
-false
-"" "update-rank-size-plot"
-PENS
-"default" 1.0 0 -16777216 true "" ""
-
-PLOT
-953
-292
-1153
-442
-population
-NIL
-NIL
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 1.0 0 -16777216 true "" "plot total-population"
-"pen-1" 1.0 0 -2674135 true "" "plot current-total-expected-population"
-
 SLIDER
 8
 192
@@ -297,25 +261,6 @@ mean-gibrat-pop
 1
 NIL
 HORIZONTAL
-
-PLOT
-1157
-292
-1411
-442
-Economic
-NIL
-NIL
-0.0
-10.0
-0.0
-10.0
-true
-true
-"" ""
-PENS
-"secondary" 1.0 0 -12186836 true "" "plot total-economic-secondary"
-"tertiary" 1.0 0 -14333415 true "" "plot total-economic-tertiary"
 
 BUTTON
 78
@@ -371,24 +316,6 @@ tertiary-growth
 NIL
 HORIZONTAL
 
-PLOT
-930
-449
-1236
-644
-data-fit
-simulated pops
-real pops
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" "update-data-fit-plot"
-PENS
-"default" 1.0 0 -16777216 true "" ""
-
 SWITCH
 5
 348
@@ -396,7 +323,7 @@ SWITCH
 381
 with-migrations?
 with-migrations?
-1
+0
 1
 -1000
 
@@ -408,9 +335,9 @@ SLIDER
 migration-rate
 migration-rate
 0
-1.0E-7
 1.0E-8
-1.0E-8
+1.0E-9
+1.0E-9
 1
 NIL
 HORIZONTAL
