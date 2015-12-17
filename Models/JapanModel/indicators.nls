@@ -1,0 +1,72 @@
+
+;;
+;  indicators
+
+
+to-report total-population
+  report sum [population] of cities
+end
+
+
+to-report total-economic-secondary
+  report sum [economic-secondary] of cities
+end
+
+to-report total-economic-tertiary
+  report sum [economic-tertiary] of cities
+end
+
+
+;;
+;  linear regression ? ! impossible without extension ¡
+to-report rank-size-slope
+  
+end
+
+
+;; fit to data as sum on all years and cities of city pop - expected pop
+to-report data-fit
+  let res 0
+  ask cities [
+    let i 0
+    foreach realized-populations [
+       set res res + (? - item i yearly-expected-populations) ^ 2
+       set i i + 1
+    ] 
+  ]
+  report res
+end
+
+
+
+;;
+;
+to-report total-expected-population [year]
+  report sum [city-expected-population year] of cities
+  
+end
+
+to-report city-expected-population [year]
+  let ind position year calibration-years
+  report item ind expected-populations
+end
+
+
+;;
+;  extrapolate a linear trend to a a visual year-by-year trend
+to-report city-current-expected-population
+  ; get two closest calibration years
+  let current-year max list ticks 1950
+  let calibind (floor ((current-year - 1950)/ 5))
+  ; calib ind assumed <= length calibration-years
+  let exppopi city-expected-population item calibind calibration-years let exppopinext exppopi
+  if calibind < (length calibration-years) - 1 [set exppopinext city-expected-population item (calibind + 1) calibration-years]
+  report exppopi +  ((current-year -  item calibind calibration-years ) * (exppopinext - exppopi) / 5)
+end
+
+
+to-report current-total-expected-population
+  report sum [city-current-expected-population] of cities
+end
+
+
