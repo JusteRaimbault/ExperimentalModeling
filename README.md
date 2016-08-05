@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/18922/JusteRaimbault/ExperimentalModeling.svg)](https://zenodo.org/badge/latestdoi/18922/JusteRaimbault/ExperimentalModeling)
+
+
 # ExperimentalModeling
 
 Sort of economic simpop, built in the frame of experimental modeling (sort of companion modeling).
